@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# -*- SkipSchemaAnnotations
+
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
