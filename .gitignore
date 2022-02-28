@@ -28,3 +28,6 @@
 
 # Ignore vscode remote container configs
 /.devcontainer
+
+# Ignore vscode launch settings
+.vscode

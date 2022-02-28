@@ -19,11 +19,11 @@ RSpec.describe '/accounts', type: :request do
   # Account. As you add validations to Account, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) do
-    skip('Add a hash of attributes valid for your model')
+    { name: 'Test123' }
   end
 
   let(:invalid_attributes) do
-    skip('Add a hash of attributes invalid for your model')
+    { name: 'test123' }
   end
 
   # This should return the minimal set of values that should be in the headers
@@ -87,7 +87,7 @@ RSpec.describe '/accounts', type: :request do
   describe 'PATCH /update' do
     context 'with valid parameters' do
       let(:new_attributes) do
-        skip('Add a hash of attributes valid for your model')
+        { name: 'Test321' }
       end
 
       it 'updates the requested account' do
@@ -95,7 +95,7 @@ RSpec.describe '/accounts', type: :request do
         patch account_url(account),
               params: { account: new_attributes }, headers: valid_headers, as: :json
         account.reload
-        skip('Add assertions for updated state')
+        expect(account.name).to eq('Test321')
       end
 
       it 'renders a JSON response with the account' do

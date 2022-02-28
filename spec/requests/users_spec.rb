@@ -19,11 +19,7 @@ RSpec.describe '/users', type: :request do
   # User. As you add validations to User, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) do
-    skip('Add a hash of attributes valid for your model')
-  end
-
-  let(:invalid_attributes) do
-    skip('Add a hash of attributes invalid for your model')
+    { name: 'test_user_name', password: 'test_password' }
   end
 
   # This should return the minimal set of values that should be in the headers
@@ -68,16 +64,20 @@ RSpec.describe '/users', type: :request do
     end
 
     context 'with invalid parameters' do
+      before(:each) do
+        User.create! valid_attributes
+      end
+
       it 'does not create a new User' do
         expect do
           post users_url,
-               params: { user: invalid_attributes }, as: :json
+               params: { user: valid_attributes }, as: :json
         end.to change(User, :count).by(0)
       end
 
       it 'renders a JSON response with errors for the new user' do
         post users_url,
-             params: { user: invalid_attributes }, headers: valid_headers, as: :json
+             params: { user: valid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to match(a_string_including('application/json'))
       end
@@ -87,7 +87,7 @@ RSpec.describe '/users', type: :request do
   describe 'PATCH /update' do
     context 'with valid parameters' do
       let(:new_attributes) do
-        skip('Add a hash of attributes valid for your model')
+        { password: 'another_test_password' }
       end
 
       it 'updates the requested user' do
@@ -95,7 +95,7 @@ RSpec.describe '/users', type: :request do
         patch user_url(user),
               params: { user: new_attributes }, headers: valid_headers, as: :json
         user.reload
-        skip('Add assertions for updated state')
+        expect(user.authenticate('another_test_password')).not_to be(false)
       end
 
       it 'renders a JSON response with the user' do
@@ -108,10 +108,15 @@ RSpec.describe '/users', type: :request do
     end
 
     context 'with invalid parameters' do
-      it 'renders a JSON response with errors for the user' do
+      let(:new_attributes) do
+        { name: 'another_test_user_name', password: 'another_test_password' }
+      end
+
+      it 'will not update to an existing name' do
         user = User.create! valid_attributes
+        User.create! new_attributes
         patch user_url(user),
-              params: { user: invalid_attributes }, headers: valid_headers, as: :json
+              params: { user: { name: 'another_test_user_name' } }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to match(a_string_including('application/json'))
       end

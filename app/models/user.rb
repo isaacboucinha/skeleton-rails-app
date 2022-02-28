@@ -11,4 +11,16 @@
 #  updated_at      :datetime         not null
 #
 class User < ApplicationRecord
+  has_many :wallets
+  has_many :accounts, through: :wallets
+
+  has_secure_password
+
+  validates :name, presence: true, uniqueness: true
+
+  before_validation :hash_name
+
+  def hash_name
+    self.name = Digest::MD5.hexdigest(name) if name
+  end
 end

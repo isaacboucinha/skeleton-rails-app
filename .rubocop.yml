@@ -1,5 +1,7 @@
 AllCops:
   NewCops: enable
+  Exclude:
+    - 'db/**/*'
 
 Metrics/MethodLength:
   Enabled: true

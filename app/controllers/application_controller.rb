@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-# Just an application controller
+# Definition for application controllers
 class ApplicationController < ActionController::API
 end
