@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(version: 2022_02_24_171246) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "wallets", force: :cascade do |t|
+  create_table "wallets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "account_id"
     t.decimal "balance"

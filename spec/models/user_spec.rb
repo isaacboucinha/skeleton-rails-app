@@ -22,25 +22,25 @@ RSpec.describe User, type: :model do
     end
 
     it 'should hash user name on save' do
-      user = User.create!(name: 'test', password: 'test')
+      user = User.create(name: 'test', password: 'test')
       user.reload
       expect(user.name).to eq(Digest::MD5.hexdigest('test'))
     end
 
     it 'should encrypt password' do
-      user = User.create!(name: 'test', password: 'test')
+      user = User.create(name: 'test', password: 'test')
       expect(user.password_digest).not_to eq('test')
       expect(user.authenticate('test')).to be_truthy
     end
 
     it 'should not allow users with same name' do
-      User.create!(name: 'test', password: 'test')
+      User.create(name: 'test', password: 'test')
       another_user = User.new(name: 'test', password: 'another_test_password')
       expect(another_user.save).to be_falsy
     end
 
     it 'should allow users with same password, stored as different digests' do
-      user = User.create!(name: 'test', password: 'test')
+      user = User.create(name: 'test', password: 'test')
       another_user = User.new(name: 'another_test_password', password: 'test')
       expect(another_user.save!).to be_truthy
 
