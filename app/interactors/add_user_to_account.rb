@@ -4,15 +4,16 @@ class AddUserToAccount
   include Interactor
 
   before do
-    context.fail!(error: 'User should be of type User') unless context.user.is_a?(User)
-    context.fail!(error: 'Account should be of type Account') unless context.account.is_a?(Account)
-  end
+    unless context.user.is_a?(User)
+      context.fail!(error: 'User should be of type User')
+      return
+    end
 
-  before do
-    context.wallet = nil
-  end
+    unless context.account.is_a?(Account)
+      context.fail!(error: 'Account should be of type Account')
+      return
+    end
 
-  def call
     unless User.find_by_id(context.user.id)
       context.fail!(error: 'The specified user does not exist')
       return
@@ -21,7 +22,13 @@ class AddUserToAccount
       context.fail!(error: 'The specified account does not exist')
       return
     end
+  end
 
+  before do
+    context.wallet = nil
+  end
+
+  def call
     context.wallet = Wallet.find_by(user_id: context.user.id, account_id: context.account.id)
     if context.wallet
       if context.wallet.active
