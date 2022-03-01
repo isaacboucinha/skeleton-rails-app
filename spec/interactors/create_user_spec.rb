@@ -4,21 +4,20 @@ require 'rails_helper'
 
 RSpec.describe CreateUser do
   context 'when given valid credentials' do
-    subject(:context) { described_class.call(name: 'test', password: 'test') }
+    let(:user) { build(:user) }
 
-    let(:user) { double(:user, name: 'test', password: 'test') }
-
-    before do
+    before(:each) do
       allow(User).to receive(:create!).and_return(user)
     end
+
+    subject(:context) { described_class.call(name: 'test', password: 'test') }
 
     it 'succeeds' do
       expect(context).to be_a_success
     end
 
-    it 'provides the user' do
+    it 'creates a user' do
       expect(context.user).to eq(user)
-      expect(context.user.name).to eq('test')
     end
   end
 

@@ -4,13 +4,13 @@ require 'rails_helper'
 
 RSpec.describe MoveAmountBetweenWallets do
   context 'when given valid credentials' do
-    let(:user) { User.create!(name: 'test', password: 'test') }
-    let(:account1) { Account.create!(name: 'Test123') }
-    let(:account2) { Account.create!(name: 'Test321') }
+    let(:user) { create(:user) }
+    let(:account1) { create(:account) }
+    let(:account2) { create(:account) }
     let(:amount) { 1000 }
 
-    let(:from_wallet) { Wallet.create!(user_id: user.id, account_id: account1.id) }
-    let(:to_wallet) { Wallet.create!(user_id: user.id, account_id: account2.id) }
+    let(:from_wallet) { create(:wallet, user:, account: account1) }
+    let(:to_wallet) { create(:wallet, user:, account: account2) }
 
     subject(:context) { described_class.call(from_wallet:, to_wallet:, amount:) }
 
@@ -29,7 +29,7 @@ RSpec.describe MoveAmountBetweenWallets do
 
   context 'when given invalid credentials' do
     subject(:context) do
-      described_class.call()
+      described_class.call
     end
 
     it 'fails' do

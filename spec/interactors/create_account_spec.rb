@@ -4,23 +4,25 @@ require 'rails_helper'
 
 RSpec.describe CreateAccount do
   context 'when given valid credentials' do
-    subject(:context) { described_class.call(name: 'Test123') }
+    let(:account) { build(:account) }
+
+    before(:each) do
+      allow(Account).to receive(:create!).and_return(account)
+    end
+
+    subject(:context) { described_class.call(name: 'test') }
 
     it 'succeeds' do
       expect(context).to be_a_success
     end
 
     it 'creates an account' do
-      expect { context }.to change { Account.count }.from(0).to(1)
-    end
-
-    it 'provides the account' do
-      expect(context.account.name).to eq('Test123')
+      expect(context.account).to eq(account)
     end
   end
 
   context 'when given invalid credentials' do
-    subject(:context) { described_class.call(name: 'test') }
+    subject(:context) { described_class.call }
 
     it 'fails' do
       expect(context).to be_a_failure

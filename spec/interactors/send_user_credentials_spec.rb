@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe SendUserCredentials do
   context 'when given valid credentials' do
-    let(:user) { User.create!(name: 'test', password: 'test') }
+    let(:user) { build(:user) }
 
     subject(:context) { described_class.call(user:) }
 

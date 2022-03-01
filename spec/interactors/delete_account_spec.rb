@@ -6,7 +6,7 @@ RSpec.describe DeleteAccount do
   subject(:context) { described_class.call(name: 'test') }
 
   context 'when given valid credentials' do
-    let(:account) { double(:account, name: 'test') }
+    let(:account) { build(:account) }
 
     before do
       allow(Account).to receive(:find_by).and_return(account)
