@@ -30,14 +30,17 @@ ActiveRecord::Schema.define(version: 2022_02_24_171246) do
   end
 
   create_table "wallets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "account_id"
-    t.decimal "balance"
-    t.string "currency"
+    t.uuid "user_id", null: false
+    t.uuid "account_id", null: false
+    t.decimal "balance", default: "1000.0"
+    t.string "currency", default: "eur"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["account_id"], name: "index_wallets_on_account_id"
+    t.index ["user_id", "account_id"], name: "index_wallets_on_user_id_and_account_id", unique: true
     t.index ["user_id"], name: "index_wallets_on_user_id"
   end
 
+  add_foreign_key "wallets", "accounts"
+  add_foreign_key "wallets", "users"
 end
