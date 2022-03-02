@@ -25,6 +25,8 @@ class Wallet < ApplicationRecord
   validate :minimum_amount_for_creation, on: :create
   validate :ensure_min_and_max_balance
 
+  private
+
   # SMELL change values in sections below to something less static
 
   def ensure_min_and_max_balance
