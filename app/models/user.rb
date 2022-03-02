@@ -7,6 +7,7 @@
 #  id              :uuid             not null, primary key
 #  name            :text
 #  password_digest :string
+#  discarded_at    :datetime
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #
