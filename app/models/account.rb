@@ -9,8 +9,8 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
-class Account < ApplicationRecord
-  acts_as_paranoid
+class Account < ApplicationRecord 
+  include Discard::Model
 
   has_many :wallets
   has_many :users, through: :wallets

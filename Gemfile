@@ -39,7 +39,7 @@ gem 'net-imap', require: false
 gem 'interactor', '~> 3.0'
 
 # Built-in support for soft delete
-gem 'acts_as_paranoid'
+gem 'discard', '~> 1.2'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

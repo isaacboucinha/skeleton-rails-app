@@ -60,9 +60,6 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
-    acts_as_paranoid (0.8.0)
-      activerecord (>= 5.2, < 7.1)
-      activesupport (>= 5.2, < 7.1)
     annotate (3.2.0)
       activerecord (>= 3.2, < 8.0)
       rake (>= 10.4, < 14.0)
@@ -76,6 +73,8 @@ GEM
     crass (1.0.6)
     diff-lcs (1.5.0)
     digest (3.1.0)
+    discard (1.2.1)
+      activerecord (>= 4.2, < 8)
     erubi (1.10.0)
     factory_bot (6.2.0)
       activesupport (>= 5.0.0)
@@ -218,11 +217,11 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  acts_as_paranoid
   annotate
   bcrypt (~> 3.1.7)
   bootsnap (>= 1.4.4)
   byebug
+  discard (~> 1.2)
   factory_bot_rails
   interactor (~> 3.0)
   listen (~> 3.3)

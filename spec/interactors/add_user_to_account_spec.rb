@@ -18,7 +18,7 @@ RSpec.describe AddUserToAccount do
 
     it 'succeeds if association already exists, but is inactive' do
       wallet = create(:wallet, user: @user, account: @account)
-      wallet.delete
+      wallet.discard
 
       expect(context).to be_a_success
       expect(context.wallet).to be_present

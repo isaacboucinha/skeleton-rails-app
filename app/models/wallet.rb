@@ -12,8 +12,8 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
-class Wallet < ApplicationRecord
-  acts_as_paranoid
+class Wallet < ApplicationRecord 
+  include Discard::Model
 
   belongs_to :user
   belongs_to :account

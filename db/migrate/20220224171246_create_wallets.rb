@@ -7,7 +7,7 @@ class CreateWallets < ActiveRecord::Migration[6.1]
       t.decimal :balance, :default => 1000
       t.string :currency, :default => 'eur'
       
-      t.datetime :deleted_at
+      t.datetime :discarded_at
       t.timestamps
     end
 
