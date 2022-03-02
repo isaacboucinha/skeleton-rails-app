@@ -123,7 +123,7 @@ RSpec.describe '/accounts', type: :request do
       account = Account.create! valid_attributes
       expect do
         delete account_url(account), headers: valid_headers, as: :json
-      end.to change(Account, :count).by(-1)
+      end.to change(Account.kept, :count).by(-1)
     end
   end
 end
