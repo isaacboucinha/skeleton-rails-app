@@ -119,7 +119,7 @@ RSpec.describe Account, type: :model do
       end
     end
 
-    context 'on discard method call' do
+    context 'on discard' do
       let(:account) { create(:account) }
 
       before(:each) do
@@ -128,6 +128,7 @@ RSpec.describe Account, type: :model do
 
       it 'discards the instance' do
         expect(account.discarded?).to be(true)
+        expect(account.discarded_at).to be_truthy
         expect(Account.kept).to eq([])
       end
     end
