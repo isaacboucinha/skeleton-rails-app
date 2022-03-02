@@ -3,22 +3,20 @@
 require 'rails_helper'
 
 RSpec.describe DeleteUser do
-  subject(:context) { described_class.call(name: 'test') }
-
   context 'when given valid credentials' do
     let(:user) { build(:user) }
 
-    before do
-      allow(User).to receive(:find_by).and_return(user)
-    end
+    subject(:context) { described_class.call(user:) }
 
     it 'succeeds' do
-      expect(user).to receive(:destroy)
+      expect(user).to receive(:delete)
       expect(context).to be_a_success
     end
   end
 
   context 'when given invalid credentials' do
+    subject(:context) { described_class.call }
+
     it 'fails' do
       expect(context).to be_a_failure
     end

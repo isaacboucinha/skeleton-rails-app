@@ -4,15 +4,12 @@ class DeleteUser
   include Interactor
 
   before do
-    context.fail!(error: 'Name should be a string') unless context.name.is_a?(String)
+    context.fail!(error: 'User should be of type User') unless context.user.is_a?(User)
   end
 
   def call
-    user = User.find_by(name: context.name)
-    if user
-      user.destroy
-    else
-      context.fail!(error: 'Record not found')
-    end
+    context.user.delete
+  rescue ActiveRecord::RecordNotDestroyed => e
+    context.fail!(error: e.record.errors)
   end
 end

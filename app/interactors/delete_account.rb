@@ -4,15 +4,12 @@ class DeleteAccount
   include Interactor
 
   before do
-    context.fail!(error: 'Name should be a string') unless context.name.is_a?(String)
+    context.fail!(error: 'Account should be of type Account') unless context.account.is_a?(Account)
   end
 
   def call
-    account = Account.find_by(name: context.name)
-    if account
-      account.destroy
-    else
-      context.fail!(error: 'Record not found')
-    end
+    context.account.delete
+  rescue ActiveRecord::RecordNotDestroyed => e
+    context.fail!(error: e.record.errors)
   end
 end

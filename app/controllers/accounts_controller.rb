@@ -17,12 +17,12 @@ class AccountsController < ApplicationController
 
   # POST /accounts
   def create
-    @account = Account.new(account_params)
+    context = CreateAccount.call(account_params)
 
-    if @account.save
-      render json: @account, status: :created, location: @account
+    if context.success?
+      render json: context.account, status: :created, location: context.account
     else
-      render json: @account.errors, status: :unprocessable_entity
+      render json: context.error, status: :unprocessable_entity
     end
   end
 
@@ -37,7 +37,13 @@ class AccountsController < ApplicationController
 
   # DELETE /accounts/1
   def destroy
-    @account.destroy
+    context = DeleteAccount.call(account: @account)
+
+    if context.success?
+      head :no_content
+    else
+      render json: context.error, status: :unprocessable_entity
+    end
   end
 
   private
