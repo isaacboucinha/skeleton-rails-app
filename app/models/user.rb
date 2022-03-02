@@ -11,6 +11,8 @@
 #  updated_at      :datetime         not null
 #
 class User < ApplicationRecord
+  acts_as_paranoid
+
   has_many :wallets
   has_many :accounts, through: :wallets
 

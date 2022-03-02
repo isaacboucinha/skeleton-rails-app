@@ -29,13 +29,12 @@ class AddUserToAccount
   end
 
   def call
-    context.wallet = Wallet.find_by(user_id: context.user.id, account_id: context.account.id)
+    context.wallet = Wallet.with_deleted.find_by(user_id: context.user.id, account_id: context.account.id)
     if context.wallet
-      if context.wallet.active
-        context.fail!(error: 'User account association already exists')
+      if context.wallet.deleted_at
+        context.wallet.recover
       else
-        context.wallet.active = true
-        context.wallet.save!
+        context.fail!(error: 'User account association already exists')
       end
       return
     end

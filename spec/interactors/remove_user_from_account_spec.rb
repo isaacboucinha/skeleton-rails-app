@@ -9,12 +9,13 @@ RSpec.describe RemoveUserFromAccount do
     subject(:context) { described_class.call(user:, account:) }
 
     it 'succeeds if association exists' do
-      create(:wallet, user:, account:, active: true)
+      create(:wallet, user:, account:)
       expect(context).to be_a_success
     end
 
     it 'fails if association exists, but is inactive' do
-      create(:wallet, user:, account:, active: false)
+      wallet = create(:wallet, user:, account:)
+      wallet.delete
 
       expect(context.error).to be_present
       expect(context).to be_a_failure

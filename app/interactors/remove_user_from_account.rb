@@ -29,13 +29,12 @@ class RemoveUserFromAccount
   end
 
   def call
-    context.wallet = Wallet.find_by(user_id: context.user.id, account_id: context.account.id)
-    unless context.wallet&.active
+    context.wallet = Wallet.with_deleted.find_by(user_id: context.user.id, account_id: context.account.id)
+    unless context.wallet && !context.wallet.deleted_at
       context.fail!(error: 'User account association does not exist')
       return
     end
 
-    context.wallet.active = false
-    context.wallet.save!
+    context.wallet.delete
   end
 end

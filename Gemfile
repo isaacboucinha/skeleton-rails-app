@@ -38,6 +38,9 @@ gem 'net-imap', require: false
 # Use interactors for model business logic
 gem 'interactor', '~> 3.0'
 
+# Built-in support for soft delete
+gem 'acts_as_paranoid'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]

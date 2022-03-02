@@ -13,6 +13,8 @@
 #  updated_at :datetime         not null
 #
 class Wallet < ApplicationRecord
+  acts_as_paranoid
+
   belongs_to :user
   belongs_to :account
 

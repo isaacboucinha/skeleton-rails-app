@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 2022_02_24_171246) do
 
   create_table "accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
+    t.datetime "deleted_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -25,6 +26,7 @@ ActiveRecord::Schema.define(version: 2022_02_24_171246) do
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "name"
     t.string "password_digest"
+    t.datetime "deleted_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -34,7 +36,7 @@ ActiveRecord::Schema.define(version: 2022_02_24_171246) do
     t.uuid "account_id", null: false
     t.decimal "balance", default: "1000.0"
     t.string "currency", default: "eur"
-    t.boolean "active", default: true
+    t.datetime "deleted_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["account_id"], name: "index_wallets_on_account_id"
