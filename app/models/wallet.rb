@@ -12,7 +12,7 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
-class Wallet < ApplicationRecord 
+class Wallet < ApplicationRecord
   include Discard::Model
 
   belongs_to :user

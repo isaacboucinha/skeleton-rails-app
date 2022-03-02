@@ -49,5 +49,78 @@ RSpec.describe User, type: :model do
 
       expect(user.password_digest).not_to eq(another_user.password_digest)
     end
+
+    context 'associations' do
+      let(:user) { create(:user) }
+
+      describe 'with accounts' do
+        it 'allows one association' do
+          create(:wallet, user:)
+
+          user.reload
+          expect(user.accounts.empty?).to be(false)
+        end
+
+        it 'allows multiple associations' do
+          create(:wallet, user:)
+          create(:wallet, user:)
+
+          user.reload
+          expect(user.accounts.empty?).to be(false)
+        end
+
+        it 'should not show accounts from discarded wallets' do
+          create(:wallet, user:, discarded_at: DateTime.now)
+
+          user.reload
+          expect(user.accounts.empty?).to be(true)
+        end
+
+        it 'should not show discarded accounts' do
+          account = create(:account, discarded_at: DateTime.now)
+          create(:wallet, user:, account:, discarded_at: DateTime.now)
+
+          user.reload
+          expect(user.accounts.empty?).to be(true)
+        end
+      end
+
+      describe 'with wallets' do
+        it 'allows one association' do
+          create(:wallet, user:)
+
+          user.reload
+          expect(user.wallets.empty?).to be(false)
+        end
+
+        it 'allows multiple associations' do
+          create(:wallet, user:)
+          create(:wallet, user:)
+
+          user.reload
+          expect(user.wallets.empty?).to be(false)
+        end
+
+        it 'should not show discarded wallets' do
+          create(:wallet, user:, discarded_at: DateTime.now)
+
+          user.reload
+          expect(user.wallets.empty?).to be(true)
+        end
+      end
+    end
+
+    context 'on discard method call' do
+      let(:user) { create(:user) }
+
+      before(:each) do
+        user.discard
+      end
+
+      it 'discards the instance' do
+        expect(user.discarded?).to be(true)
+        expect(User.kept).to eq([])
+      end
+    end
   end
 end

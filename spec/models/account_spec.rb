@@ -58,5 +58,78 @@ RSpec.describe Account, type: :model do
       another_account = Account.new(name: 'TesT123')
       expect(another_account.save).to be_falsy
     end
+
+    context 'associations' do
+      let(:account) { create(:account) }
+
+      describe 'with users' do
+        it 'allows one association' do
+          create(:wallet, account:)
+
+          account.reload
+          expect(account.users.empty?).to be(false)
+        end
+
+        it 'allows multiple associations' do
+          create(:wallet, account:)
+          create(:wallet, account:)
+
+          account.reload
+          expect(account.users.empty?).to be(false)
+        end
+
+        it 'should not show users from discarded wallets' do
+          create(:wallet, account:, discarded_at: DateTime.now)
+
+          account.reload
+          expect(account.users.empty?).to be(true)
+        end
+
+        it 'should not show discarded users' do
+          user = create(:user, discarded_at: DateTime.now)
+          create(:wallet, user:, account:, discarded_at: DateTime.now)
+
+          account.reload
+          expect(account.users.empty?).to be(true)
+        end
+      end
+
+      describe 'with wallets' do
+        it 'allows one association' do
+          create(:wallet, account:)
+
+          account.reload
+          expect(account.wallets.empty?).to be(false)
+        end
+
+        it 'allows multiple associations' do
+          create(:wallet, account:)
+          create(:wallet, account:)
+
+          account.reload
+          expect(account.wallets.empty?).to be(false)
+        end
+
+        it 'should not show discarded wallets' do
+          create(:wallet, account:, discarded_at: DateTime.now)
+
+          account.reload
+          expect(account.wallets.empty?).to be(true)
+        end
+      end
+    end
+
+    context 'on discard method call' do
+      let(:account) { create(:account) }
+
+      before(:each) do
+        account.discard
+      end
+
+      it 'discards the instance' do
+        expect(account.discarded?).to be(true)
+        expect(Account.kept).to eq([])
+      end
+    end
   end
 end

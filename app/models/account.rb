@@ -9,14 +9,16 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
-class Account < ApplicationRecord 
+class Account < ApplicationRecord
   include Discard::Model
 
-  has_many :wallets
+  has_many :wallets, -> { where('wallets.discarded_at IS NULL') }
   has_many :users, through: :wallets
 
   validates :name, presence: true, length: { minimum: 5, maximum: 15 }
   validate :name_is_unique, :name_contains_letters_and_numbers
+
+  private
 
   def name_is_unique
     return if Account.where('lower(name) = ?', name&.downcase).first.nil?

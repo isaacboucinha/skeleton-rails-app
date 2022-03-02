@@ -221,7 +221,7 @@ DEPENDENCIES
   bcrypt (~> 3.1.7)
   bootsnap (>= 1.4.4)
   byebug
-  discard (~> 1.2)
+  discard (~> 1.2.1)
   factory_bot_rails
   interactor (~> 3.0)
   listen (~> 3.3)
