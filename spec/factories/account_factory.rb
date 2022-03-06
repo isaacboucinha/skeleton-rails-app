@@ -5,7 +5,7 @@
 # Table name: accounts
 #
 #  id           :uuid             not null, primary key
-#  name         :string
+#  name         :citext           not null
 #  discarded_at :datetime
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
