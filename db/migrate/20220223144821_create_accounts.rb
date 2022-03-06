@@ -6,5 +6,7 @@ class CreateAccounts < ActiveRecord::Migration[6.1]
       t.datetime :discarded_at
       t.timestamps
     end
+
+    add_index :accounts, :name, unique: true
   end
 end
