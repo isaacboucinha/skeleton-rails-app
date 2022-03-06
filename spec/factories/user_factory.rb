@@ -5,7 +5,7 @@
 # Table name: users
 #
 #  id              :uuid             not null, primary key
-#  name            :text
+#  name            :text             not null
 #  password_digest :string
 #  discarded_at    :datetime
 #  created_at      :datetime         not null
