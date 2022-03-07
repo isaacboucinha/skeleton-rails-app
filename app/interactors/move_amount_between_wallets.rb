@@ -14,12 +14,12 @@ class MoveAmountBetweenWallets
       return
     end
 
-    unless context.from_wallet&.persisted?
+    unless context.from_wallet.persisted?
       context.fail!(error: 'The specified wallet from which to move amount does not exist')
       return
     end
 
-    unless context.to_wallet&.persisted?
+    unless context.to_wallet.persisted?
       context.fail!(error: 'The specified wallet to which to move amount does not exist')
       return
     end

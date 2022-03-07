@@ -14,11 +14,11 @@ class RemoveUserFromAccount
       return
     end
 
-    unless context.user&.persisted?
+    unless context.user.persisted?
       context.fail!(error: 'The specified user does not exist')
       return
     end
-    unless context.account&.persisted?
+    unless context.account.persisted?
       context.fail!(error: 'The specified account does not exist')
       return
     end
