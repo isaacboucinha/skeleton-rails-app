@@ -14,8 +14,6 @@
 class User < ApplicationRecord
   include Discard::Model
 
-  attr_readonly :name
-
   has_many :user_accounts, -> { where('users_accounts.discarded_at IS NULL') }
   has_many :accounts, through: :user_accounts
   has_many :wallets, -> { where('wallets.discarded_at IS NULL') }
@@ -24,7 +22,7 @@ class User < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
 
-  before_validation do
+  before_validation(on: :create) do
     self.name = Digest::MD5.hexdigest(name) if name
   end
 end

@@ -28,7 +28,10 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
-    if @user.update(user_params)
+    @user.name = (Digest::MD5.hexdigest(user_params[:name]) if user_params[:name]) || @user.name
+    @user.password = user_params[:password]
+
+    if @user.save
       render json: @user
     else
       render json: @user.errors, status: :unprocessable_entity
