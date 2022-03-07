@@ -8,6 +8,6 @@ class SendUserCredentials
   end
 
   def call
-    puts 'Sending credentials via email. Check them there!' if Rails.env.test?
+    puts 'Sending credentials via email. Check them there!' # if Rails.env.test?
   end
 end
