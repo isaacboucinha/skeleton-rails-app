@@ -15,7 +15,7 @@ class User < ApplicationRecord
   include Discard::Model
 
   has_many :user_accounts, -> { where('users_accounts.discarded_at IS NULL') }
-  has_many :accounts, through: :user_accounts
+  has_many :accounts, -> { where('accounts.discarded_at IS NULL') }, through: :user_accounts
   has_many :wallets, -> { where('wallets.discarded_at IS NULL') }
 
   has_secure_password

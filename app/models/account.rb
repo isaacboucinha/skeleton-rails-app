@@ -14,7 +14,7 @@ class Account < ApplicationRecord
   include Discard::Model
 
   has_many :user_accounts, -> { where('users_accounts.discarded_at IS NULL') }
-  has_many :users, through: :user_accounts
+  has_many :users, -> { where('users.discarded_at IS NULL') }, through: :user_accounts
 
   NAME_REGEX = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])/
   private_constant :NAME_REGEX

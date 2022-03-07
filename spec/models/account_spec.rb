@@ -89,7 +89,7 @@ RSpec.describe Account, type: :model do
 
         it 'should not show discarded users' do
           user = create(:user, discarded_at: DateTime.now)
-          create(:user_account, user:, account:, discarded_at: DateTime.now)
+          create(:user_account, user:, account:)
 
           account.reload
           expect(account.users.empty?).to be(true)
