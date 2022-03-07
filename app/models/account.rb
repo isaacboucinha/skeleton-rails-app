@@ -4,11 +4,10 @@
 #
 # Table name: accounts
 #
-#  id           :uuid             not null, primary key
-#  name         :citext           not null
-#  discarded_at :datetime
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  id         :uuid             not null, primary key
+#  name       :citext           not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 class Account < ApplicationRecord
   has_many :user_accounts, -> { where('users_accounts.discarded_at IS NULL') }
