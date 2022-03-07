@@ -5,12 +5,10 @@ require 'rails_helper'
 RSpec.describe MoveAmountBetweenWallets do
   context 'when given valid credentials' do
     let(:user) { create(:user) }
-    let(:account1) { create(:account) }
-    let(:account2) { create(:account) }
     let(:amount) { 1000 }
 
-    let(:from_wallet) { create(:wallet, user:, account: account1) }
-    let(:to_wallet) { create(:wallet, user:, account: account2) }
+    let(:from_wallet) { create(:wallet, user:) }
+    let(:to_wallet) { create(:wallet, user:) }
 
     subject(:context) { described_class.call(from_wallet:, to_wallet:, amount:) }
 

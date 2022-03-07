@@ -13,19 +13,19 @@ RSpec.describe AddUserToAccount do
 
     it 'succeeds if no association exists' do
       expect(context).to be_a_success
-      expect(context.wallet).to be_present
+      expect(context.user_account).to be_present
     end
 
     it 'succeeds if association already exists, but is inactive' do
-      wallet = create(:wallet, user: @user, account: @account)
-      wallet.discard
+      user_account = create(:user_account, user: @user, account: @account)
+      user_account.discard
 
       expect(context).to be_a_success
-      expect(context.wallet).to be_present
+      expect(context.user_account).to be_present
     end
 
     it 'fails if association already exists and is active' do
-      create(:wallet, user: @user, account: @account)
+      create(:user_account, user: @user, account: @account)
 
       expect(context.error).to be_present
       expect(context).to be_a_failure

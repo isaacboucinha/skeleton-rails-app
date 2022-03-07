@@ -16,8 +16,9 @@ class User < ApplicationRecord
 
   attr_readonly :name
 
+  has_many :user_accounts, -> { where('users_accounts.discarded_at IS NULL') }
+  has_many :accounts, through: :user_accounts
   has_many :wallets, -> { where('wallets.discarded_at IS NULL') }
-  has_many :accounts, through: :wallets
 
   has_secure_password
 

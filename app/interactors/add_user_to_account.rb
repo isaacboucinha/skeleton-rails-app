@@ -14,31 +14,31 @@ class AddUserToAccount
       return
     end
 
-    unless User.find_by_id(context.user.id)
+    unless context.user&.persisted?
       context.fail!(error: 'The specified user does not exist')
       return
     end
-    unless Account.find_by_id(context.account.id)
+    unless context.account&.persisted?
       context.fail!(error: 'The specified account does not exist')
       return
     end
   end
 
   before do
-    context.wallet = nil
+    context.user_account = nil
   end
 
   def call
-    context.wallet = Wallet.all.find_by(user_id: context.user.id, account_id: context.account.id)
-    if context.wallet
-      if context.wallet.discarded?
-        context.wallet.undiscard
+    context.user_account = UserAccount.all.find_by(user_id: context.user.id, account_id: context.account.id)
+    if context.user_account
+      if context.user_account.discarded?
+        context.user_account.undiscard
       else
         context.fail!(error: 'User account association already exists')
       end
       return
     end
 
-    context.wallet = Wallet.create!(user_id: context.user.id, account_id: context.account.id)
+    context.user_account = UserAccount.create!(user_id: context.user.id, account_id: context.account.id)
   end
 end

@@ -57,22 +57,22 @@ RSpec.describe User, type: :model do
 
       describe 'with accounts' do
         it 'allows one association' do
-          create(:wallet, user:)
+          create(:user_account, user:)
 
           user.reload
           expect(user.accounts.empty?).to be(false)
         end
 
         it 'allows multiple associations' do
-          create(:wallet, user:)
-          create(:wallet, user:)
+          create(:user_account, user:)
+          create(:user_account, user:)
 
           user.reload
           expect(user.accounts.empty?).to be(false)
         end
 
-        it 'should not show accounts from discarded wallets' do
-          create(:wallet, user:, discarded_at: DateTime.now)
+        it 'should not show accounts from discarded associations' do
+          create(:user_account, user:, discarded_at: DateTime.now)
 
           user.reload
           expect(user.accounts.empty?).to be(true)
@@ -80,7 +80,7 @@ RSpec.describe User, type: :model do
 
         it 'should not show discarded accounts' do
           account = create(:account, discarded_at: DateTime.now)
-          create(:wallet, user:, account:, discarded_at: DateTime.now)
+          create(:user_account, user:, account:, discarded_at: DateTime.now)
 
           user.reload
           expect(user.accounts.empty?).to be(true)

@@ -14,7 +14,8 @@
 #  updated_at   :datetime         not null
 #
 FactoryBot.define do
-  factory :wallet do
+  factory :user_account do
     user
+    account
   end
 end

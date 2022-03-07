@@ -17,11 +17,6 @@ class Wallet < ApplicationRecord
   include Discard::Model
 
   belongs_to :user
-  belongs_to :account
-
-  # model level validation, so that save() for a repeated user-account association
-  # fails gracefully, instead of throwing ActiveRecord::RecordNotUnique
-  validates :user_id, uniqueness: { scope: :account_id }
 
   validate :minimum_amount_for_creation, on: :create
   validate :ensure_min_and_max_balance

@@ -14,27 +14,27 @@ class RemoveUserFromAccount
       return
     end
 
-    unless User.find_by_id(context.user.id)
+    unless context.user&.persisted?
       context.fail!(error: 'The specified user does not exist')
       return
     end
-    unless Account.find_by_id(context.account.id)
+    unless context.account&.persisted?
       context.fail!(error: 'The specified account does not exist')
       return
     end
   end
 
   before do
-    context.wallet = nil
+    context.user_account = nil
   end
 
   def call
-    context.wallet = Wallet.all.find_by(user_id: context.user.id, account_id: context.account.id)
-    unless context.wallet&.undiscarded?
+    context.user_account = UserAccount.all.find_by(user_id: context.user.id, account_id: context.account.id)
+    unless context.user_account&.undiscarded?
       context.fail!(error: 'User account association does not exist')
       return
     end
 
-    context.success = context.wallet.discard
+    context.success = context.user_account.discard
   end
 end
