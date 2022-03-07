@@ -3,7 +3,7 @@ class CreateWallets < ActiveRecord::Migration[6.1]
     create_table :wallets, id: :uuid do |t|
       t.references :user, null: false, foreign_key: true, type: :uuid
       
-      t.integer :balance, :default => MINIMUM_FOR_WALLET_CREATION
+      t.integer :balance, :default => Globals::Amounts::MINIMUM_FOR_WALLET_CREATION
       t.string :currency, :default => 'eur'
       
       t.timestamps
