@@ -10,8 +10,14 @@ RSpec.describe Wallet, type: :model do
     let(:user2) { create(:user) }
 
     it 'should not exist without a user association' do
-      wallet = Wallet.new()
+      wallet = Wallet.new
       expect(wallet.save).to be_falsy
+    end
+
+    it 'should exist with a user association' do
+      wallet = Wallet.new(user: user1)
+      expect(wallet.save).to be_truthy
+      expect(wallet.user).to be_truthy
     end
 
     # SMELL change values in sections below to something less static
