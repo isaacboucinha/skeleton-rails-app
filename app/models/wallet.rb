@@ -23,21 +23,27 @@ class Wallet < ApplicationRecord
 
   private
 
-  # SMELL change values in sections below to something less static
-
   def ensure_min_and_max_balance
     euros = convert_to_euro
-    if euros >= -100_000
-      errors.add(:balance, 'balance can not exceed 1.000.000 euros (exchange rate may vary)') unless euros <= 1_000_000
+    if euros >= Globals::Amounts::MINIMUM_BALANCE_FOR_WALLET
+      unless euros <= Globals::Amounts::MAXIMUM_BALANCE_FOR_WALLET
+        errors.add(:balance,
+                   "balance can not exceed #{Globals::Amounts::MAXIMUM_BALANCE_FOR_WALLET} euros "\
+                   '(exchange rate may vary)')
+      end
     else
-      errors.add(:balance, 'balance should be at more than negative 100.000 euros (exchange rate may vary)')
+      errors.add(:balance,
+                 "balance should be at more than #{Globals::Amounts::MINIMUM_BALANCE_FOR_WALLET} euros "\
+                 '(exchange rate may vary)')
     end
   end
 
   def minimum_amount_for_creation
-    return if convert_to_euro >= 1000
+    return if convert_to_euro >= Globals::Amounts::MINIMUM_FOR_WALLET_CREATION
 
-    errors.add(:balance, 'balance should be at least 1000 euros (exchange rate might vary)')
+    errors.add(:balance,
+               "balance should be at least #{Globals::Amounts::MINIMUM_FOR_WALLET_CREATION} euros "\
+               '(exchange rate might vary)')
   end
 
   # DUMMY we'll assume all other currencies have a 90% exchange rate to euros

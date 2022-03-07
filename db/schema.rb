@@ -47,7 +47,7 @@ ActiveRecord::Schema.define(version: 2022_03_06_221101) do
 
   create_table "wallets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id", null: false
-    t.decimal "balance", default: "1000.0"
+    t.integer "balance", default: 100000
     t.string "currency", default: "eur"
     t.datetime "discarded_at"
     t.datetime "created_at", precision: 6, null: false

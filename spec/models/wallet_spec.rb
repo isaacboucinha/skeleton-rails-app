@@ -20,101 +20,107 @@ RSpec.describe Wallet, type: :model do
       expect(wallet.user).to be_truthy
     end
 
-    # SMELL change values in sections below to something less static
-
     it 'should have a currency and minimum balance by default' do
       wallet = Wallet.new(user_id: user1.id)
       expect(wallet.save).to be_truthy
       wallet.reload
-      expect(wallet.balance).to eq(1000)
+      expect(wallet.balance).to eq(Globals::Amounts::MINIMUM_FOR_WALLET_CREATION)
       expect(wallet.currency).to eq('eur')
     end
 
     it 'should accept other currencies' do
-      wallet = Wallet.new(user_id: user1.id, currency: 'test', balance: 10_000)
+      allow_any_instance_of(Wallet).to receive(:minimum_amount_for_creation)
+        .and_return(true)
+
+      wallet = Wallet.new(user_id: user1.id, currency: 'test')
       expect(wallet.save).to be_truthy
-      expect(wallet.balance).to eq(10_000)
       expect(wallet.currency).to eq('test')
     end
 
     context 'on creation' do
-      it 'should accept initial balance above 1000 euros' do
-        wallet = Wallet.new(user_id: user1.id, balance: 1100)
+      it 'should accept initial balance above minimum' do
+        wallet = Wallet.new(user_id: user1.id, balance: Globals::Amounts::MINIMUM_FOR_WALLET_CREATION + 1)
         expect(wallet.save).to be_truthy
       end
 
-      it 'should accept initial balance equal to 1000 euros' do
-        wallet = Wallet.new(user_id: user1.id, balance: 1100)
+      it 'should accept initial balance equal to minimum' do
+        wallet = Wallet.new(user_id: user1.id, balance: Globals::Amounts::MINIMUM_FOR_WALLET_CREATION)
         expect(wallet.save).to be_truthy
       end
 
-      it 'should not accept initial balance below 1000 euros' do
-        wallet = Wallet.new(user_id: user1.id, balance: 999)
+      it 'should not accept initial balance below minimum' do
+        wallet = Wallet.new(user_id: user1.id, balance: Globals::Amounts::MINIMUM_FOR_WALLET_CREATION - 1)
         expect(wallet.save).to be_falsy
       end
 
       describe 'for currencies other than euro' do
-        it 'should accept initial balance above, or equal to, 1000 euros' do
-          allow_any_instance_of(Wallet).to receive(:convert_to_euro).and_return(1000)
+        it 'should accept initial balance above, or equal to, minimum' do
+          allow_any_instance_of(Wallet).to receive(:convert_to_euro)
+            .and_return(Globals::Amounts::MINIMUM_FOR_WALLET_CREATION)
 
-          wallet = Wallet.new(user_id: user1.id, balance: 10)
+          wallet = Wallet.new(user_id: user1.id, currency: 'test', balance: 10)
           expect(wallet.save).to be_truthy
         end
 
-        it 'should not accept initial balance below 1000 euros, for different currencies' do
-          allow_any_instance_of(Wallet).to receive(:convert_to_euro).and_return(999)
+        it 'should not accept initial balance below minimum, for different currencies' do
+          allow_any_instance_of(Wallet).to receive(:convert_to_euro)
+            .and_return(Globals::Amounts::MINIMUM_FOR_WALLET_CREATION - 1)
 
-          wallet = Wallet.new(user_id: user1.id, balance: 10)
+          wallet = Wallet.new(user_id: user1.id, currency: 'test', balance: 10)
           expect(wallet.save).to be_falsy
         end
       end
     end
 
     context 'on save' do
-      it 'should accept balances between -100.000 and 1.000.000' do
+      it 'should accept balances between minimum and maximum' do
         wallet = Wallet.new(user_id: user1.id)
         expect(wallet.save).to be_truthy
 
-        wallet.balance = -100_000
+        wallet.balance = Globals::Amounts::MINIMUM_BALANCE_FOR_WALLET
         expect(wallet.save).to be_truthy
 
-        wallet.balance = 1_000_000
+        wallet.balance = Globals::Amounts::MAXIMUM_BALANCE_FOR_WALLET
         expect(wallet.save).to be_truthy
       end
 
-      it 'should not accept balances below -100.000' do
-        wallet = Wallet.new(user_id: user1.id, balance: -100_001)
+      it 'should not accept balances below minimum' do
+        wallet = Wallet.new(user_id: user1.id, balance: Globals::Amounts::MINIMUM_BALANCE_FOR_WALLET - 1)
         expect(wallet.save).to be_falsy
       end
 
-      it 'should not accept balances above 1.000.000' do
-        wallet = Wallet.new(user_id: user1.id, balance: 1_000_001)
+      it 'should not accept balances above maximum' do
+        wallet = Wallet.new(user_id: user1.id, balance: Globals::Amounts::MAXIMUM_BALANCE_FOR_WALLET + 1)
         expect(wallet.save).to be_falsy
       end
 
       describe 'for currencies other than euro' do
-        it 'should accept balances between -100.000 and 1.000.000' do
+        it 'should accept balances between minimum and maximum' do
           wallet = Wallet.new(user_id: user1.id)
           wallet.save
 
-          allow_any_instance_of(Wallet).to receive(:convert_to_euro).and_return(-100_000)
+          allow_any_instance_of(Wallet).to receive(:convert_to_euro)
+            .and_return(Globals::Amounts::MINIMUM_BALANCE_FOR_WALLET)
           wallet.balance = -10
           expect(wallet.save).to be_truthy
 
-          allow_any_instance_of(Wallet).to receive(:convert_to_euro).and_return(1_000_000)
+          allow_any_instance_of(Wallet).to receive(:convert_to_euro)
+            .and_return(Globals::Amounts::MAXIMUM_BALANCE_FOR_WALLET)
           wallet.balance = 100
           expect(wallet.save).to be_truthy
         end
 
-        it 'should not accept balances below -100.000' do
+        it 'should not accept balances below minimum' do
           wallet = Wallet.new(user_id: user1.id)
-          allow_any_instance_of(Wallet).to receive(:convert_to_euro).and_return(-100_001)
+          allow_any_instance_of(Wallet).to receive(:convert_to_euro)
+            .and_return(Globals::Amounts::MINIMUM_BALANCE_FOR_WALLET - 1)
           expect(wallet.save).to be_falsy
         end
 
-        it 'should not accept balances above 1.000.000' do
+        it 'should not accept balances above maximum' do
           wallet = Wallet.new(user_id: user1.id)
-          allow_any_instance_of(Wallet).to receive(:convert_to_euro).and_return(1_000_001)
+          allow_any_instance_of(Wallet).to receive(:convert_to_euro)
+            .and_return(Globals::Amounts::MAXIMUM_BALANCE_FOR_WALLET + 1)
           expect(wallet.save).to be_falsy
         end
       end
