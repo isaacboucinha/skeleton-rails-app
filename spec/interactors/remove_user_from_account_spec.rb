@@ -14,8 +14,8 @@ RSpec.describe RemoveUserFromAccount do
     end
 
     it 'fails if association exists, but is inactive' do
-      wallet = create(:user_account, user:, account:)
-      wallet.destroy
+      user_account = create(:user_account, user:, account:)
+      user_account.discard
 
       expect(context.error).to be_present
       expect(context).to be_a_failure
