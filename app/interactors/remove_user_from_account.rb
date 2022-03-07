@@ -35,6 +35,6 @@ class RemoveUserFromAccount
       return
     end
 
-    context.success = context.user_account.delete
+    context.success = context.user_account.destroy
   end
 end

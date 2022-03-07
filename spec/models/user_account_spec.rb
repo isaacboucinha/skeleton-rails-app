@@ -56,17 +56,16 @@ RSpec.describe UserAccount, type: :model do
       expect(user_account2.save).to be_falsy
     end
 
-    context 'on discard' do
+    context 'on delete' do
       let(:user_account) { create(:user_account) }
 
       before(:each) do
-        user_account.discard
+        user_account.destroy!
       end
 
-      it 'discards the instance' do
-        expect(user_account.discarded?).to be(true)
-        expect(user_account.discarded_at).to be_truthy
-        expect(UserAccount.kept).to eq([])
+      it 'deletes the instance' do
+        expect(user_account.persisted?).to be(false)
+        expect(UserAccount.all).to eq([])
       end
     end
   end
