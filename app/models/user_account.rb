@@ -12,8 +12,6 @@
 #  updated_at   :datetime         not null
 #
 class UserAccount < ApplicationRecord
-  include Discard::Model
-
   self.table_name = 'users_accounts'
 
   belongs_to :user

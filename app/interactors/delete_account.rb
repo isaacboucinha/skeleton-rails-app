@@ -8,7 +8,7 @@ class DeleteAccount
   end
 
   def call
-    context.account.discard
+    context.account.delete
   rescue ActiveRecord::RecordNotDestroyed => e
     context.fail!(error: e.record.errors)
   end

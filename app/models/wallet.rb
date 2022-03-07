@@ -13,8 +13,6 @@
 #  updated_at   :datetime         not null
 #
 class Wallet < ApplicationRecord
-  include Discard::Model
-
   belongs_to :user
 
   validate :minimum_amount_for_creation, on: :create

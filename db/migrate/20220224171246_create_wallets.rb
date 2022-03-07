@@ -6,7 +6,6 @@ class CreateWallets < ActiveRecord::Migration[6.1]
       t.integer :balance, :default => MINIMUM_FOR_WALLET_CREATION
       t.string :currency, :default => 'eur'
       
-      t.datetime :discarded_at
       t.timestamps
     end
   end

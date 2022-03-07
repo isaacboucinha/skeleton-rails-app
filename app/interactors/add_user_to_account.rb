@@ -31,11 +31,7 @@ class AddUserToAccount
   def call
     context.user_account = UserAccount.all.find_by(user_id: context.user.id, account_id: context.account.id)
     if context.user_account
-      if context.user_account.discarded?
-        context.user_account.undiscard
-      else
-        context.fail!(error: 'User account association already exists')
-      end
+      context.fail!(error: 'User account association already exists')
       return
     end
 
