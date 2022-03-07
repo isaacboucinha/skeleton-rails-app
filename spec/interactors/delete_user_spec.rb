@@ -9,7 +9,7 @@ RSpec.describe DeleteUser do
     subject(:context) { described_class.call(user:) }
 
     it 'succeeds' do
-      expect(user).to receive(:discard)
+      expect(user).to receive(:destroy)
       expect(context).to be_a_success
     end
   end

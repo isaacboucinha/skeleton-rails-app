@@ -13,14 +13,6 @@ RSpec.describe RemoveUserFromAccount do
       expect(context).to be_a_success
     end
 
-    it 'fails if association exists, but is inactive' do
-      user_account = create(:user_account, user:, account:)
-      user_account.discard
-
-      expect(context.error).to be_present
-      expect(context).to be_a_failure
-    end
-
     it 'fails if association does not exist' do
       expect(context.error).to be_present
       expect(context).to be_a_failure

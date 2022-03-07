@@ -128,7 +128,7 @@ RSpec.describe '/users', type: :request do
       user = User.create! valid_attributes
       expect do
         delete user_url(user), headers: valid_headers, as: :json
-      end.to change(User.kept, :count).by(-1)
+      end.to change(User.all, :count).by(-1)
     end
   end
 end

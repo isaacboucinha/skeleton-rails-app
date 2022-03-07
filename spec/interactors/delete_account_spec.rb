@@ -9,7 +9,7 @@ RSpec.describe DeleteAccount do
     subject(:context) { described_class.call(account:) }
 
     it 'succeeds' do
-      expect(account).to receive(:discard)
+      expect(account).to receive(:destroy)
       expect(context).to be_a_success
     end
   end

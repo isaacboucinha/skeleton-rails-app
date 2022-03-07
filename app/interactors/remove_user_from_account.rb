@@ -30,11 +30,11 @@ class RemoveUserFromAccount
 
   def call
     context.user_account = UserAccount.all.find_by(user_id: context.user.id, account_id: context.account.id)
-    unless context.user_account&.undiscarded?
+    unless context.user_account
       context.fail!(error: 'User account association does not exist')
       return
     end
 
-    context.success = context.user_account.discard
+    context.success = context.user_account.destroy
   end
 end

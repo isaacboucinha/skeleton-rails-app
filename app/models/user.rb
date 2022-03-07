@@ -7,16 +7,13 @@
 #  id              :uuid             not null, primary key
 #  name            :text             not null
 #  password_digest :string
-#  discarded_at    :datetime
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #
 class User < ApplicationRecord
-  include Discard::Model
-
-  has_many :user_accounts, -> { where('users_accounts.discarded_at IS NULL') }
-  has_many :accounts, -> { where('accounts.discarded_at IS NULL') }, through: :user_accounts
-  has_many :wallets, -> { where('wallets.discarded_at IS NULL') }
+  has_many :user_accounts, dependent: :destroy
+  has_many :accounts, through: :user_accounts
+  has_many :wallets, dependent: :destroy
 
   has_secure_password
 

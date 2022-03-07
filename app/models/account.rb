@@ -4,17 +4,14 @@
 #
 # Table name: accounts
 #
-#  id           :uuid             not null, primary key
-#  name         :citext           not null
-#  discarded_at :datetime
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  id         :uuid             not null, primary key
+#  name       :citext           not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 class Account < ApplicationRecord
-  include Discard::Model
-
-  has_many :user_accounts, -> { where('users_accounts.discarded_at IS NULL') }
-  has_many :users, -> { where('users.discarded_at IS NULL') }, through: :user_accounts
+  has_many :user_accounts, dependent: :destroy
+  has_many :users, through: :user_accounts
 
   NAME_REGEX = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])/
   private_constant :NAME_REGEX

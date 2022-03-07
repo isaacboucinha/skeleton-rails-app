@@ -4,17 +4,14 @@
 #
 # Table name: wallets
 #
-#  id           :uuid             not null, primary key
-#  user_id      :uuid             not null
-#  balance      :integer          default(100000)
-#  currency     :string           default("eur")
-#  discarded_at :datetime
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  id         :uuid             not null, primary key
+#  user_id    :uuid             not null
+#  balance    :integer          default(100000)
+#  currency   :string           default("eur")
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 class Wallet < ApplicationRecord
-  include Discard::Model
-
   belongs_to :user
 
   validate :minimum_amount_for_creation, on: :create

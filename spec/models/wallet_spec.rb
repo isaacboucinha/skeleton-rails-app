@@ -126,17 +126,16 @@ RSpec.describe Wallet, type: :model do
       end
     end
 
-    context 'on discard' do
+    context 'on delete' do
       let(:wallet) { create(:wallet) }
 
       before(:each) do
-        wallet.discard
+        wallet.destroy!
       end
 
-      it 'discards the instance' do
-        expect(wallet.discarded?).to be(true)
-        expect(wallet.discarded_at).to be_truthy
-        expect(Wallet.kept).to eq([])
+      it 'deletes the instance' do
+        expect(wallet.persisted?).to be(false)
+        expect(Wallet.all).to eq([])
       end
     end
   end

@@ -4,16 +4,13 @@
 #
 # Table name: users_accounts
 #
-#  id           :uuid             not null, primary key
-#  user_id      :uuid             not null
-#  account_id   :uuid             not null
-#  discarded_at :datetime
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  id         :uuid             not null, primary key
+#  user_id    :uuid             not null
+#  account_id :uuid             not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 class UserAccount < ApplicationRecord
-  include Discard::Model
-
   self.table_name = 'users_accounts'
 
   belongs_to :user

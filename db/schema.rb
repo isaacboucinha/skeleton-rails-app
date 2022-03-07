@@ -35,7 +35,6 @@ ActiveRecord::Schema.define(version: 2022_03_06_221101) do
   create_table "users_accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id", null: false
     t.uuid "account_id", null: false
-    t.datetime "discarded_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["account_id"], name: "index_users_accounts_on_account_id"
@@ -47,7 +46,6 @@ ActiveRecord::Schema.define(version: 2022_03_06_221101) do
     t.uuid "user_id", null: false
     t.integer "balance", default: 100000
     t.string "currency", default: "eur"
-    t.datetime "discarded_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_wallets_on_user_id"

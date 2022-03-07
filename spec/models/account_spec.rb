@@ -80,34 +80,35 @@ RSpec.describe Account, type: :model do
           expect(account.users.empty?).to be(false)
         end
 
-        it 'should not show users from discarded associations' do
-          create(:user_account, account:, discarded_at: DateTime.now)
+        it 'should not show users from deleted associations' do
+          user_account = create(:user_account, account:)
 
+          user_account.destroy!
           account.reload
           expect(account.users.empty?).to be(true)
         end
 
-        it 'should not show discarded users' do
-          user = create(:user, discarded_at: DateTime.now)
+        it 'should not show deleted users' do
+          user = create(:user)
           create(:user_account, user:, account:)
 
+          user.destroy!
           account.reload
           expect(account.users.empty?).to be(true)
         end
       end
     end
 
-    context 'on discard' do
+    context 'on destroy' do
       let(:account) { create(:account) }
 
       before(:each) do
-        account.discard
+        account.destroy!
       end
 
-      it 'discards the instance' do
-        expect(account.discarded?).to be(true)
-        expect(account.discarded_at).to be_truthy
-        expect(Account.kept).to eq([])
+      it 'deletes the instance' do
+        expect(account.persisted?).to be(false)
+        expect(Account.all).to eq([])
       end
     end
   end

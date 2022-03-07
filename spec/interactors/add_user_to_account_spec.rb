@@ -18,7 +18,7 @@ RSpec.describe AddUserToAccount do
 
     it 'succeeds if association already exists, but is inactive' do
       user_account = create(:user_account, user: @user, account: @account)
-      user_account.discard
+      user_account.destroy
 
       expect(context).to be_a_success
       expect(context.user_account).to be_present
